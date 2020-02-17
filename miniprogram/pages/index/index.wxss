@@ -71,9 +71,9 @@ page {
 }
 
 .list_image {
-  width: 50px;
+  width: 125px;
   height: 50px;
-  padding-top: 10px;
+  padding-top: 25px;
   padding-left: 10px;
   float: left;
 }
@@ -103,6 +103,7 @@ page {
 .tips{
   line-height: 40px;
 }
+
 
 ::-webkit-scrollbar {
   width: 0;
