@@ -83,37 +83,20 @@ Page({
   remapData(data) {
     let listData = [];
     let item = { info: "", weekday: "", TemperatureHigh: "", TemperatureLow:""}
-    //第一天
-    item.info = data.f1.day_weather;
-    item.weekday = this.getWeekday(data.f1.weekday);
-    item.TemperatureHigh = data.f1.day_air_temperature;
-    item.TemperatureLow = data.f1.night_air_temperature;
-    listData.push(item)
-/*     //第二天
-    listData[1].info = data.f2.day_weather;
-    listData[1].weekday = this.getWeekday(data.f2.weekday);
-    listData[1].TemperatureHigh = data.f2.day_air_temperature;
-    listData[1].TemperatureLow = data.f2.night_air_temperature;
-    //第三天
-    listData[2].info = data.f3.day_weather;
-    listData[2].weekday = this.getWeekday(data.f3.weekday);
-    listData[2].TemperatureHigh = data.f3.day_air_temperature;
-    listData[2].TemperatureLow = data.f3.night_air_temperature;
-    //第四天
-    listData[3].info = data.f4.day_weather;
-    listData[3].weekday = this.getWeekday(data.f4.weekday);
-    listData[3].TemperatureHigh = data.f4.day_air_temperature;
-    listData[3].TemperatureLow = data.f4.night_air_temperature;
-    //第五天
-    listData[4].info = data.f5.day_weather;
-    listData[4].weekday = this.getWeekday(data.f5.weekday);
-    listData[4].TemperatureHigh = data.f5.day_air_temperature;
-    listData[4].TemperatureLow = data.f5.night_air_temperature;
-    //第六天
-    listData[5].info = data.f6.day_weather;
-    listData[5].weekday = this.getWeekday(data.f6.weekday);
-    listData[5].TemperatureHigh = data.f6.day_air_temperature;
-    listData[5].TemperatureLow = data.f6.night_air_temperature; */
+    let list_key = ["now", 'f1', 'f2', 'f3', 'f4', 'f5', 'f6']
+    for (let i=0; i<7; i++ ) {
+      item.info = data[list_key[i]].day_weather;
+      item.weekday = this.getWeekday(data[list_key[i]].weekday);
+      item.TemperatureHigh = data[list_key[i]].day_air_temperature;
+      item.TemperatureLow = data[list_key[i]].night_air_temperature;
+      console.log(item)
+      console.log(listData);
+      listData.push(item)
+      console.log(item)
+      console.log(listData);
+
+    }
+
     this.setData({
       listArray: listData,
     });
