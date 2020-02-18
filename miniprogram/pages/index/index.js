@@ -9,9 +9,8 @@ Page({
     weatherArray: [],
     listArray: [], // json
     WeatherDataGenerateDateTime: "loading...",
-    tips: "loading...",
     weatherIcon: "/images/icons/weather_1-128.png",
-    weatherInfo: "",
+    weatherInfo: "loading...",
     currentTemperature: "N/A",
   },
 
@@ -50,10 +49,10 @@ Page({
                 });
                 console.log(res.data.showapi_res_body)
                 that.setData({
-                  WeatherDataGenerateDateTime: "更新时间："+res.data.showapi_res_body.now.temperature_time,
+                  WeatherDataGenerateDateTime: "即时天气(更新时间：" + res.data.showapi_res_body.now.temperature_time + ")",
                   currentTemperature: res.data.showapi_res_body.now.temperature,
-                  tips: "空气质量" + res.data.showapi_res_body.now.aqiDetail.quality,
-                  weatherInfo: res.data.showapi_res_body.f1.day_weather + "转" + res.data.showapi_res_body.f1.night_weather
+                  weatherInfo: res.data.showapi_res_body.now.weather + "//" + res.data.showapi_res_body.now.wind_direction + res.data.showapi_res_body.now.wind_power + "//空气质量指数:" + res.data.showapi_res_body.now.aqi + " " + res.data.showapi_res_body.now.aqiDetail.quality + "//湿度:" + res.data.showapi_res_body.now.sd ,
+                  weatherIcon: res.data.showapi_res_body.now.weather_pic,
                 });
               }
             })
@@ -70,9 +69,7 @@ Page({
     query.select('.top').boundingClientRect(function (res) {
       let topHeight = res.height;
       let screenHeight = wx.getSystemInfoSync().windowHeight;
-
       let scrollHeight = screenHeight - topHeight - 70; // 屏幕的高度 - 头部蓝色区域高 - 标题栏
-
       that.setData({
         scrollHeight: scrollHeight,
         iconImageHeight: topHeight / 2
@@ -82,21 +79,16 @@ Page({
 
   remapData(data) {
     let listData = [];
-    let item = { info: "", weekday: "", TemperatureHigh: "", TemperatureLow:""}
-    let list_key = ["now", 'f1', 'f2', 'f3', 'f4', 'f5', 'f6']
-    for (let i=0; i<7; i++ ) {
-      item.info = data[list_key[i]].day_weather;
+    let list_key = ['f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7']
+    for (let i = 0; i < 7; i++) {
+      let item = { day_icon: "", night_icon: "", weekday: "", TemperatureHigh: "", TemperatureLow: "" };
+      item.day_icon = data[list_key[i]].day_weather_pic;
+      item.night_icon = data[list_key[i]].night_weather_pic;
       item.weekday = this.getWeekday(data[list_key[i]].weekday);
       item.TemperatureHigh = data[list_key[i]].day_air_temperature;
       item.TemperatureLow = data[list_key[i]].night_air_temperature;
-      console.log(item)
-      console.log(listData);
-      listData.push(item)
-      console.log(item)
-      console.log(listData);
-
+      listData.push(item);
     }
-
     this.setData({
       listArray: listData,
     });
@@ -104,47 +96,10 @@ Page({
   },
 
   getWeekday(date) {
-    var mydate = new Date(date);
-    var myddy = mydate.getDay();
+    /*     var mydate = new Date(date);
+        var myddy = mydate.getDay(); */
     var weekday = ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"];
-    return weekday[myddy];
+    console.log(date, weekday);
+    return weekday[Number(date) - 1];
   },
-  /*   getWeatherIcon(weather) {
-      switch (weather) {
-        case "多云转中雨":
-          return "/images/icons/weather_icon_17.svg";
-        case "多云转晴":
-          return "/images/icons/weather_icon_3.svg";
-        case "中雨转多云":
-          return "/images/icons/weather_icon_8.svg";
-        case "晴转多云":
-          return "/images/icons/weather_icon_3.svg";
-        case "多云":
-          return "/images/icons/weather_icon_2.svg";
-        case "雷阵雨转多云":
-          return "/images/icons/weather_icon_24.svg"
-        case "晴":
-          return "/images/icons/weather_icon_47.svg"
-          break;
-      }
-    } , */
-  getWeatherIcon(weather) {
-    switch (weather) {
-      case "晴":
-        return "/images/weather_china/d00.gif";
-      case "多云转晴":
-        return "/images/icons/weather_icon_3.svg";
-      case "中雨转多云":
-        return "/images/icons/weather_icon_8.svg";
-      case "晴转多云":
-        return "/images/icons/weather_icon_3.svg";
-      case "多云":
-        return "/images/icons/weather_icon_2.svg";
-      case "雷阵雨转多云":
-        return "/images/icons/weather_icon_24.svg"
-      case "晴":
-        return "/images/icons/weather_icon_47.svg"
-        break;
-    }
-  }
 })

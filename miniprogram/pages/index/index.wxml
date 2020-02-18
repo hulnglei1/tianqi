@@ -9,13 +9,13 @@
         <image src='{{weatherIcon}}' style='height:{{iconImageHeight}}px;width:{{iconImageHeight}}px;'></image>
       </view>
     </view>
-<!--     <view class="subtitle tips">{{weatherInfo}}</view>
- -->    <view class="subtitle tips">{{weatherInfo}}    {{tips}}</view>
+    <view class="subtitle tips">{{weatherInfo}}</view>
   </view>
   <scroll-view class='list' scroll-y style="height:{{scrollHeight}}rpx;">
     <view wx:for="{{listArray}}" wx:for-index="index" wx:for-item="item">
       <view class="list_item {{index % 2 == 0 ? 'list_item_alter' : ''}}">
-        <text class="list_image">{{item.info}}</text>
+        <image class="list_image" src='{{item.day_icon}}'></image>
+        <image class="list_image" src='{{item.night_icon}}'></image>
         <text class="list_weekday">{{item.weekday}}</text>
         <text class="list_t_highest">{{item.TemperatureHigh}} ℃</text>
         <text class="list_t_lowest">{{item.TemperatureLow}} ℃</text>
