@@ -23,7 +23,6 @@ Page({
       success(res) {
         const latitude = res.latitude;
         const longitude = res.longitude;
-        // console.log(longitude, latitude);
         wx.request({
           url: 'https://api.gugudata.com/location/geodecode?appkey=74ZEZVVEC5G4&longitude=' + res.longitude + '&latitude=' + res.latitude,
           header: {
@@ -96,10 +95,7 @@ Page({
   },
 
   getWeekday(date) {
-    /*     var mydate = new Date(date);
-        var myddy = mydate.getDay(); */
     var weekday = ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"];
-    console.log(date, weekday);
     return weekday[Number(date) - 1];
   },
 })
