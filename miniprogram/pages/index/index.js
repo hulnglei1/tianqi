@@ -8,13 +8,16 @@ Page({
     location: 'loading...',
     weatherArray: [],
     listArray: [], // json
+    cityname: "",
+    showapi_data: {},
     WeatherDataGenerateDateTime: "loading...",
     weatherIcon: "/images/icons/weather_1-128.png",
     weatherInfo: "loading...",
     currentTemperature: "N/A",
   },
 
-  onLoad: function () {
+  onLoad: function (options) {
+    that = this;
     this.calcScrollHeight();
     let that = this;
     // 页面加载完毕，获取用户的定位信息
@@ -36,25 +39,40 @@ Page({
             that.setData({
               location: res.data.Data[0].Township + ', ' + res.data.Data[0].District,
             });
-            const showapi_url = 'https://route.showapi.com/9-5?showapi_appid=146633&from=5&lng=' + longitude + '&lat=' + latitude + '&needMoreDay=1&needIndex=1&needHourData=0&need3HourForcast=0&needAlarm=0&showapi_sign=fd5ee50c2713400aa2ae4796b198729c';
+            let cityname = that.data.cityname;
+            let showapi_url = "";
+            if (typeof(options.cityname) == "undefined") {
+              showapi_url = 'https://route.showapi.com/9-5?showapi_appid=146633&from=5&lng=' + longitude + '&lat=' + latitude + '&needMoreDay=1&needIndex=1&needHourData=0&need3HourForcast=0&needAlarm=0&showapi_sign=fd5ee50c2713400aa2ae4796b198729c';
+            }
+            else {
+              cityname = options.cityname;
+              showapi_url = 'https://route.showapi.com/9-2?showapi_appid=146633&from=5&area=' + cityname + '&needMoreDay=1&needIndex=1&needHourData=0&need3HourForcast=0&needAlarm=0&showapi_sign=fd5ee50c2713400aa2ae4796b198729c';
+              that.setData({
+                location: cityname,
+              });
+              console.log(showapi_url);
+            }
             wx.request({
               url: showapi_url,
               header: {
                 'content-type': 'application/json'
               },
               success(res) {
+                //储存天气数据储存在云数据库
+                let showapi_data = res.data.showapi_res_body;
                 that.setData({
-                  weatherArray: that.remapData(res.data.showapi_res_body)
+                  weatherArray: that.remapData(showapi_data)
                 });
-                console.log(res.data.showapi_res_body)
                 that.setData({
-                  WeatherDataGenerateDateTime: "即时天气(更新时间：" + res.data.showapi_res_body.now.temperature_time + ")",
-                  currentTemperature: res.data.showapi_res_body.now.temperature,
-                  weatherInfo: res.data.showapi_res_body.now.weather + "//" + res.data.showapi_res_body.now.wind_direction + res.data.showapi_res_body.now.wind_power + "//空气质量指数:" + res.data.showapi_res_body.now.aqi + " " + res.data.showapi_res_body.now.aqiDetail.quality + "//湿度:" + res.data.showapi_res_body.now.sd ,
-                  weatherIcon: res.data.showapi_res_body.now.weather_pic,
+                  WeatherDataGenerateDateTime: "即时天气(更新时间：" + showapi_data.now.temperature_time + ")",
+                  currentTemperature: showapi_data.now.temperature,
+                  weatherInfo: showapi_data.now.weather + "//" + showapi_data.now.wind_direction + showapi_data.now.wind_power + "//空气质量指数:" + showapi_data.now.aqi + " " + showapi_data.now.aqiDetail.quality + "//湿度:" + showapi_data.now.sd,
+                  weatherIcon: showapi_data.now.weather_pic,
                 });
               }
             })
+
+
           }
         })
       }
@@ -97,5 +115,16 @@ Page({
   getWeekday(date) {
     var weekday = ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"];
     return weekday[Number(date) - 1];
+  },
+
+  onShareAppMessage: function (res) {
+    return {
+      title: '当地即时天气，一周天气',
+    }
+  },
+  toCitychoose() {
+    wx.navigateTo({
+      url: '/pages/citychoose/citychoose',
+    })
   },
 })

@@ -1,12 +1,17 @@
 <!-- index.wxml -->
 <view class="container">
   <view class="top">
-    <view class="title">{{location}}</view>
+    <navigator class="city" url="/pages/citychoose/citychoose">
+      <image class='loc_icon' src='/images/location_s_w.png'></image>
+      <view class="title">{{location}}</view>
+    </navigator>
     <view class="subtitle">{{WeatherDataGenerateDateTime}}</view>
     <view class="visual">
       <view class="temperature">{{currentTemperature}} ℃</view>
       <view class="weathericon">
-        <image src='{{weatherIcon}}' style='height:{{iconImageHeight}}px;width:{{iconImageHeight}}px;'></image>
+        <navigator class="item-navigator" url="/pages/video/video?id=1">
+          <image src='{{weatherIcon}}' style='height:{{iconImageHeight}}px;width:{{iconImageHeight}}px;'></image>
+        </navigator>
       </view>
     </view>
     <view class="subtitle tips">{{weatherInfo}}</view>

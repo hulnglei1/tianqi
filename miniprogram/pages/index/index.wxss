@@ -21,12 +21,23 @@ page {
   background: linear-gradient(#4990e2, #87c1f1);
 }
 
+.city {
+  height: 75px;
+}
 .title {
   text-align: center;
   font-size: 22px;
   color: #fff;
   padding-top: 30px;
   font-weight: 500;
+  float: center;
+}
+.loc_icon {
+  width: 20px;
+  height: 20px;
+  padding-top: 30px;
+  padding-left: 40px;
+  float: left;
 }
 
 .subtitle {
@@ -100,7 +111,7 @@ page {
   font-weight: 500;
 }
 
-.tips{
+.tips {
   line-height: 40px;
 }
 
